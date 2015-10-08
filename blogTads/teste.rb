@@ -9,26 +9,50 @@ class Conta
     
     def sacar(quantidade)
         puts "Sacando #{quantidade}"
-        self.saldo = self.saldo - quantidade
+        if possuiLimite(quantidade)
+            self.saldo -= quantidade 
+        else
+            puts "saldo insuficiente para saque"
+        end
         exibirSaldo()
     end
+    def possuiLimite(quantidade)
+        ((self.saldo - quantidade)>(-self.limite))
+    end
     def exibirSaldo()
-        puts "novo saldo é #{self.saldo}"
+        puts "saldo atual do correntista #{self.nome_usuario} é #{self.saldo}"
+        puts "---------------------------"
     end
     def depositar(quantidade)
        puts "Efetuando deposito de #{quantidade}" 
-       self.saldo = self.saldo + quantidade
+       self.saldo += quantidade
        exibirSaldo()
+    end
+    def transferencia(ct_destino, quantidade)
+        if possuiLimite(quantidade)
+            self.sacar(quantidade)
+            ct_destino.depositar( quantidade)
+        else
+            puts "Sr. #{self.nome_usuario} saldo insuficiente para tranferencia"
+        end
     end
 end
 
 a = Conta.new
+b = Conta.new
 
-a.nome_usuario = "eu"
-a.saldo = 150
+a.nome_usuario = "Latoch"
+a.saldo = 50
+a.limite = 500
 
-puts "Correntista #{a.nome_usuario} possui saldo #{a.saldo}"
+b.nome_usuario = "Tester"
+b.saldo = -232
+
+puts a.exibirSaldo()
+puts b.exibirSaldo()
 
 a.sacar(100)
-
+a.sacar(544)
 a.depositar(423)
+a.transferencia(b,500)
+a.transferencia(b,500)

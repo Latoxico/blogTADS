@@ -1,0 +1,5 @@
+rails new PROJETO
+rails g model CLASSE
+rake db:migrate (:down)
+rails g migration ALTERAÇÃO_BD
+rails g controller accounts
